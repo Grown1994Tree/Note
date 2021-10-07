@@ -35,8 +35,47 @@
     - 配合like语句使用
     - `_`匹配单个字符，`%`匹配多个字符
 
+5. 更改数据表名的常用方法：
+    `RENAME TABLE 原名 TO 新名字;`
+    `ALTER TABLE 原名 RENAME 新名;`
+    `ALTER TABLE 原名 RENAME TO 新名;`
 
+6. 增加表列
+    `ALTER TABLE 表名字 ADD COLUMN 列名字 数据类型 约束;` 
+    `ALTER TABLE 表名字 ADD 列名字 数据类型 约束;`
 
+7. 删除表列
+    `ALTER TABLE 表名字 DROP COLUMN 列名字;`
+    `ALTER TABLE 表名字 DROP 列名字;`
+
+8. 重新设置字段类型
+*<font size=2>可能会导致数据丢失</font>*
+`ALTER TABLE 表名字 CHANGE 原列名 新列名 数据类型 约束;`
+`ALTER TABLE 表名字 MODIFY 列名字 新数据类型;`
+
+9. 添加索引 
+`ALTER TABLE 表名字 ADD INDEX 索引名 (列名);`
+`CREATE INDEX 索引名 ON 表名字 (列名);`
+
+10. 创建视图语句
+`CREATE VIEW 视图名(列a,列b,列c) AS SELECT 列1,列2,列3 FROM 表名字;`
+
+11. 导入纯数据
+`LOAD DATA INFILE '文件路径和文件名' INTO TABLE 表名字;` 
+
+12. 导出数据
+`SELECT 列1，列2 INTO OUTFILE '文件路径和文件名' FROM 表名字;` *<font size=2>因为三导出到外部文件，所以需要`OUTFILE`关键字</font>*
+
+*<font size=2>对于11.12来说`文件路径和文件名`不是任意目录都可以，需要安全目录里面的文件夹才可以。通常使用`show variables like '%secure%'`指令查看安全目录</font>*
+
+### 三、备份与还原
+主要命令: `mysqldump`
+`mysqldump -u root 数据库名>备份文件名; `  #备份整个数据库
+`mysqldump -u root 数据库名 表名字>备份文件名;`  #备份整个表
+
+还原方式：
+1. mysql控制面版使用`source`指令
+2. 命令行使用`<`指令
 
 ### 错误整理
 1. 在创造数据库时，避免把`()`写成`{}`
