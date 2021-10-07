@@ -1,0 +1,2 @@
+* * * * * /homes/linuxTest/crontabs/test.sh
+
