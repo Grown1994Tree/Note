@@ -1,40 +1,62 @@
 ### 一、探测主机是否上线
+> 使用`-sn`参数确认主机是否上线
 
-1. 利用ARP协议验证端口
-
-### 探测主机是否上线
-
-# 四种方式
-ARP from Link Layer
-ICMP from Network Layer
-TCP from Transport Layer
-UDP from Transport Layer
-
-# 使用arp
+1. 利用ARP协议探测
+```shell
+# 语法
 nmap -PR -sn TARGETS
+### 仅仅限制在同一个网段
+# 参数：`-PR`
+```
 
-sudo arp-scan -I eth0 -l
-
-# 使用ping
+2. 利用ICMP探测
+```shell
+# 语法
 nmap -PE -sn MACHINE_IP/24
+### 使用ping回显来判断主机是否存活
+# 同一个子网会返回MAC地址
+```
+> 使用`-PE`存在被防火墙拦截，因此可以使用`-PP`（时间戳）和`-PM`(子网掩码)代替
 
-# 时间戳
-nmap -PP -sn MACHINE_IP/24
-
-# mask
-nmap -PM -sn MACHINE_IP/24
-
-# tcp syn包
+3. 利用TCP/UDP协议进行探测
+```shell
+# 语法
 nmap -PS -sn MACHINE_IP/24
+### 默认端口为80，可以使用`-PS8080,8081`主动添加端口
+### 使用超级管理员可以无需完成三次握手，非超级管理员会完成三次握手，即会留下访问记录
 
-# tcp ack包
+# 语法
 nmap -PA -sn MACHINE_IP/24
+### 默认端口为80，可以使用`-PA8080,8081`主动添加端口
+### 使用超级管理员可以无需完成三次握手，非超级管理员会完成三次握手，即会留下访问记录
 
-Scan Type	Example Command
-ARP Scan	                          sudo nmap -PR -sn MACHINE_IP/24
-ICMP Echo Scan	                 sudo nmap -PE -sn MACHINE_IP/24
-ICMP Timestamp Scan	         sudo nmap -PP -sn MACHINE_IP/24
-ICMP Address Mask Scan	   sudo nmap -PM -sn MACHINE_IP/24
-TCP SYN Ping Scan	          sudo nmap -PS22,80,443 -sn MACHINE_IP/30
-TCP ACK Ping Scan	         sudo nmap -PA22,80,443 -sn MACHINE_IP/30
-UDP Ping Scan	                 sudo nmap -PU53,161,162 -sn MACHINE_IP/30
+# 语法
+map -PU-sn MACHINE_IP/24
+### 默认端口为80，可以使用`-PU8080,8081`主动添加端口
+### 使用超级管理员可以无需完成三次握手，非超级管理员会完成三次握手，即会留下访问记录
+```
+
+### 二、端口扫描
+1. TCP全连接扫描
+```shell
+# 语法
+nmap -sT TARGET
+### 使用TCP全连接扫描
+# 参数：
+# -F: 缩减常用扫描端口数量，从1000到100
+# -r: 默认的端口扫描顺序为无序，改为按照顺序扫描
+```
+
+2. TCP半连接扫描
+```shell
+# 语法
+nmap -sS TARGET
+### 使用半连接扫描，不会被记录扫描日志
+```
+
+3. UDP扫描
+```shell
+# 语法
+nmap -sU TARGET
+```
+
