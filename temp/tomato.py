@@ -11,7 +11,6 @@ BREAK_MINUTES = 5
 CYCLES = 1
 
 def main():
-    print("5")
     args_len = len(sys.argv)
     if args_len == 1 or args_len == 3 or args_len == 5 or args_len == 7:
         args_dict = {}
@@ -19,6 +18,8 @@ def main():
             args_dict[sys.argv[i]] = sys.argv[i+1]
     
         Exec(args_dict)
+    elif sys.argv[1] == '-h':
+        help()
     else:
         print("参数输入不符合规范")
 
@@ -114,12 +115,9 @@ def help():
     appname = appname if appname.endswith('.py') else 'tomato'  # tomato is pypi package
     print('====== 🍅 Tomato Clock =======')
     print(f'{appname}         # 工作 {WORK_MINUTES} 分钟 ，休息 {BREAK_MINUTES} 分钟')
-    print(f'{appname} -t      # 工作 {WORK_MINUTES} 分钟')
     print(f'{appname} -t <n>  # 工作 <n> 分钟')
-    print(f'{appname} -b      # 休息{BREAK_MINUTES} 分钟')
     print(f'{appname} -b <n>  # 休息 <n> 分钟')
     print(f'{appname} -h      # 帮助')
-    print(f'{appname} -r      # 循环 {CYCLES} 次番茄时间')
     print(f'{appname} -r <n>  # 循环 <n> 次番茄时间')
 
 
